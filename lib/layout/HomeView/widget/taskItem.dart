@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todo/model/TaskModel.dart';
+
+import '../../../networkLayer/FireStor.dart';
 
 class TaskItem extends StatelessWidget {
-
-  const TaskItem({super.key});
+  final TaskModel taskModel;
+  const TaskItem({super.key, required this.taskModel});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,9 @@ class TaskItem extends StatelessWidget {
         extentRatio: 0.25,
         motion: const DrawerMotion(),
         children: [  SlidableAction(
-    onPressed: (context){},
+    onPressed: (context)async { 
+      await FireStorUtils.DeletDataFromFirestore(taskModel);
+    },
     backgroundColor:  const Color(0xFFEC4B4B),
     foregroundColor: Colors.white,
     icon: Icons.delete,
@@ -48,8 +53,8 @@ class TaskItem extends StatelessWidget {
     borderRadius: BorderRadius.circular(8)),),
     Column( mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
-    Text(' Play basket ball',style: theme.textTheme.bodyLarge,),
-    Text(' go to club',style: theme.textTheme.bodyMedium,),
+    Text(taskModel.Title,style: theme.textTheme.bodyLarge,),
+    Text(taskModel.Description,style: theme.textTheme.bodyMedium,),
     Row(
     children: [ Icon(Icons.alarm,size: 18),
     Text('10:30 AM',style: theme.textTheme.bodySmall,)],)

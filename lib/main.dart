@@ -3,6 +3,8 @@ import 'package:todo/Splash/splash.dart';
 import 'package:todo/core/theme/theme.dart';
 import 'package:todo/layout/HomeLayout/HomeLayout.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:todo/layout/Login/LoginView.dart';
+import 'package:todo/layout/Register/Register.dart';
 import 'firebase_options.dart';
 
 void main()async{
@@ -24,8 +26,38 @@ class MyApp extends StatelessWidget {
       initialRoute: Splash.routeName ,
       routes:  {
          Splash.routeName:(context) =>Splash(),
-        HomeLayout.routeName:(context) => HomeLayout()
+        HomeLayout.routeName:(context) => HomeLayout(),
+        LoginView.routeName:(context) => LoginView(),
+        RegisterView.routeName:(context) => RegisterView()
+
       },
     ) ;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

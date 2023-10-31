@@ -1,9 +1,16 @@
 import 'package:calendar_timeline/calendar_timeline.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:todo/layout/HomeView/widget/taskItem.dart';
+import 'package:todo/model/TaskModel.dart';
+
+import '../../networkLayer/FireStor.dart';
 
 class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+
+  DateTime SlectedDate=DateTime.now();
+   HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +33,13 @@ class HomeView extends StatelessWidget {
               initialDate: DateTime.now(),
               firstDate: DateTime.now(),
               lastDate: DateTime.now().add(Duration(days: 365)),
-              onDateSelected: (date) => print(date),
+
+
+
+              onDateSelected: ( date) {
+                  SlectedDate= date;
+              } ,
+
               leftMargin: 20,
               monthColor: Colors.blueGrey,
               dayColor: Colors.teal[200],
@@ -38,12 +51,33 @@ class HomeView extends StatelessWidget {
             )
           ]),
           SizedBox(height: 60,),
-
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.zero,itemBuilder:(context, index) => TaskItem(),
-            itemCount: 20,),
-          )
+ Expanded(
+   child: StreamBuilder<QuerySnapshot<TaskModel>>(stream: FireStorUtils.GetRealTimeDataFromFirestore(SlectedDate ) , builder: (context, snapshot) {
+     if(snapshot.hasError){
+       return Column(
+         children: [
+           Text(snapshot.error.toString()),
+         ],
+       );
+     }
+     if(snapshot.connectionState==ConnectionState){
+       return Center(
+         child: CircularProgressIndicator(
+           color: theme.primaryColor,
+         ),
+       );
+     }
+      var tasksList=snapshot.data?.docs.map((e) => e.data()).toList()??[];
+     return ListView.builder(
+         padding: EdgeInsets.zero,itemBuilder:(context, index) => TaskItem(taskModel:tasksList[index],),
+          itemCount: tasksList.length,);
+   } ),
+ )
+          //Expanded(
+            //child: ListView.builder(
+              //padding: EdgeInsets.zero,itemBuilder:(context, index) => TaskItem(),
+           // itemCount: 20,),
+         // )
 
 
 

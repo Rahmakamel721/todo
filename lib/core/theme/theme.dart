@@ -8,7 +8,8 @@ class AppTheme {
 
   primaryColor: primaryColor,
     appBarTheme: AppBarTheme(
-        iconTheme: IconThemeData(color: Colors.black),
+
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: primaryColor,
         centerTitle: false,
         elevation: 0,
